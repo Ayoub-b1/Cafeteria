@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.pacifico-regular {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Basic bs-container styling */
+.bs-container {
+    width: 100%; /* Full width */
+    padding-left: 15px; /* Default padding */
+    padding-right: 15px; /* Default padding */
+    margin-left: auto; /* Center the bs-container */
+    margin-right: auto; /* Center the bs-container */
+  }
+  
+  /* Small screens (max-width: 576px) */
+  @media (max-width: 576px) {
+    .bs-container {
+      max-width: 100%; /* Full width for very small screens */
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+  
+  /* Medium screens (min-width: 577px and max-width: 768px) */
+  @media (min-width: 577px) and (max-width: 768px) {
+    .bs-container {
+      max-width: 540px; /* Custom max-width for medium screens */
+    }
+  }
+  
+  /* Large screens (min-width: 769px and max-width: 992px) */
+  @media (min-width: 769px) and (max-width: 992px) {
+    .bs-container {
+      max-width: 720px; /* Custom max-width for large screens */
+    }
+  }
+  
+  /* Extra large screens (min-width: 993px and max-width: 1200px) */
+  @media (min-width: 993px) and (max-width: 1200px) {
+    .bs-container {
+      max-width: 960px; /* Custom max-width for extra large screens */
+    }
+  }
+  
+  /* Extra extra large screens (min-width: 1201px) */
+  @media (min-width: 1201px) {
+    .bs-container {
+      max-width: 1140px; /* Max-width for larger screens */
+    }
+  }
+  
+
+
+  
+.swiper {
+  width: 340px;
+  height: 420px;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+/* Initial state */
+.scale-initial {
+  transform: scale(0.7);
+  opacity: 0.8;
+}
+
+/* When in view */
+.scale-up {
+  transform: scale(1);
+  opacity: 1;
+}
