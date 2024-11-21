@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import Lottie from "react-lottie";
 import loginAnimation from "../assets/login.json";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
@@ -24,14 +23,7 @@ type PasswordRequirements = {
   specialCharacter: boolean;
 };
 
-type CreateUser = {
-  UserCreated: boolean,
-  message: string
-}
-type LoginUser = {
-  UserLogged: boolean,
-  message: string
-}
+
 type Errors = {
   email?: string;
   password?: string;
@@ -58,13 +50,7 @@ const Home: React.FC = () => {
     specialCharacter: false,
   });
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: loginAnimation,
-    rendererSettings: { preserveAspectRatio: "xMidYMid slice" },
-  };
-
+  
   // Validation Regex
   const passwordValidation = {
     minLength: /.{8,}/,

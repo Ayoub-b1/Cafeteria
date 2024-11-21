@@ -25,7 +25,7 @@ app.use(express.json());
 
 
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/Cafeteria', {
+mongoose.connect(process.env.PRODMONGORI || 'mongodb://localhost:27017/Cafeteria', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })

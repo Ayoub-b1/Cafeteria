@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react'; // Swiper for feedback carousel
 import 'swiper/css';
 import 'swiper/css/navigation';
