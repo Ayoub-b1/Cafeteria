@@ -250,7 +250,6 @@ app.post('/leavefeedback', async (req, res) => {
         res.status(500).json({ message: 'Error processing feedback', error: error.message });
     }
 });
-// Connect to MongoDB (replace with your actual Mongo URI in the .env)
 
 
 const PORT = process.env.PORT || 5000;
