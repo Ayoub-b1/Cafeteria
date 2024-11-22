@@ -10,11 +10,13 @@ import Feedback from './models/Feedbacks.js';
 import Order from './models/Order.js';
 import qrcode from 'qrcode'
 import Meal from './models/Meal.js';
+import compression from 'compression';
 dotenv.config();
+
 
 const app = express();
 
-
+app.use(compression());
 // Enable CORS for all origins (allow any front-end to access this server)
 app.use(cors(
     
