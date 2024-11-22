@@ -34,12 +34,11 @@ interface Order {
 }
 function Chef() {
   const usermail = useSelector((state: RootState) => state.auth.user); // Email from Redux store
-  const username = useSelector((state: RootState) => state.auth.username); // Email from Redux store
+  
   const [selectedStatus, setSelectedStatus] = useState<string>(''); // To manage status dropdown
   const [refusedReason, setRefusedReason] = useState<string>('');   // To manage refusal reason
 
   const [Orders, setOrders] = useState<Order[]>([]);
-  const [previousOrders, setPreviousOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null); // Store selected order
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
