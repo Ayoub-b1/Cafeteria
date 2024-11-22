@@ -25,16 +25,16 @@ app.use(express.json());
 
 
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.PRODMONGORI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Timeout for server selection
+    socketTimeoutMS: 45000,        // Timeout for socket inactivity
+    bufferCommands: false,         // Disable buffering
 })
-    .then(() => {
-        console.log('MongoDB connected successfully!');
-    })
-    .catch((err) => {
-        console.error('MongoDB connection failed:', err);
-    });
+.then(() => console.log('MongoDB connected successfully!'))
+.catch(err => console.error('MongoDB connection failed:', err));
+
 // Example route
 app.post('/signup', validateCaptcha, async (req, res) => {
     try {
@@ -64,6 +64,7 @@ app.post('/signup', validateCaptcha, async (req, res) => {
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
+
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ message: 'Email incorrect' });
