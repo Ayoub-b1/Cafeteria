@@ -45,6 +45,26 @@ function Chef() {
   const [orderSuccessModalOpen, setOrderSuccessModalOpen] = useState(false);
   const onCloseSuccessModal = () => setOrderSuccessModalOpen(false);
 
+
+
+  const fetchOrders = async () => {
+    if (!usermail) return;
+
+    setIsLoading(true); // Show loading spinner
+
+    try {
+      const { data } = await axios.get(
+        `https://cafeteria-projet.vercel.app/Orders/${usermail}`
+      );
+      setOrders(data.orders); // Update the state with the fetched orders
+    } catch (error) {
+      console.error('Erreur lors de la récupération des commandes:', error);
+      toast.error('Erreur lors de la récupération des commandes.');
+    } finally {
+      setIsLoading(false); // Hide loading spinner
+    }
+  };
+  
   const handleStatusUpdate = async () => {
     if (!selectedOrder) return;
 
@@ -76,26 +96,11 @@ function Chef() {
       toast.error('Erreur lors de la mise à jour du statut.');
     } finally {
       setIsLoading(false);
+      fetchOrders()
     }
   };
 
-  const fetchOrders = async () => {
-    if (!usermail) return;
-
-    setIsLoading(true); // Show loading spinner
-
-    try {
-      const { data } = await axios.get(
-        `https://cafeteria-projet.vercel.app/Orders/${usermail}`
-      );
-      setOrders(data.orders); // Update the state with the fetched orders
-    } catch (error) {
-      console.error('Erreur lors de la récupération des commandes:', error);
-      toast.error('Erreur lors de la récupération des commandes.');
-    } finally {
-      setIsLoading(false); // Hide loading spinner
-    }
-  };
+ 
   useEffect(() => {
 
 
@@ -148,6 +153,7 @@ function Chef() {
       fixedHeader
       fixedHeaderScrollHeight="80vh"
       highlightOnHover
+      paginationRowsPerPageOptions={[8]}
       defaultSortFieldId="createdAt"
       defaultSortAsc={false}
 
