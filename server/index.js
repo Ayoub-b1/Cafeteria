@@ -16,7 +16,9 @@ const app = express();
 
 
 // Enable CORS for all origins (allow any front-end to access this server)
-app.use(cors());
+app.use(cors(
+    
+));
 
 // Enable CORS with specific origin (if needed, uncomment the next line)
 
@@ -25,7 +27,7 @@ app.use(express.json());
 
 
 
-mongoose.connect(process.env.PRODMONGORI, {
+await mongoose.connect(process.env.PRODMONGORI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     serverSelectionTimeoutMS: 5000, // Timeout for server selection

@@ -78,7 +78,7 @@ function Main() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}/meals`);
+        const response = await axios.get(`https://cafeteria-projet.vercel.app/meals`);
 
         const data = await response.data;
 

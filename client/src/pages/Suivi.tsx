@@ -59,7 +59,7 @@ const Suivi: React.FC = () => {
 
         try {
             const { data } = await axios.get(
-                `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}/Order/${usermail}`
+                `https://cafeteria-projet.vercel.app/Order/${usermail}`
             );
 
           
@@ -185,7 +185,7 @@ const Suivi: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}/leavefeedback`, {
+            const response = await axios.post(`https://cafeteria-projet.vercel.app/leavefeedback`, {
                 orderId: selectedOrder?._id,
                 client: usermail,
                 mealId : selectedOrder?.meals[0].meal._id,

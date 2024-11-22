@@ -29,7 +29,7 @@ const Menu: React.FC = () => {
         if (!selectedMeal) return;
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}/Order`, {
+            const response = await axios.post(`https://cafeteria-projet.vercel.app/Order`, {
                 mealId: selectedMeal._id,
                 mealName: selectedMeal.name,
                 client: usermail,

@@ -150,7 +150,7 @@ const Home: React.FC = () => {
 
       try {
         // Envoi de la requête POST à l'API
-        const response = await axios.post(`${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}${apiEndpoint}`, data);
+        const response = await axios.post(`https://cafeteria-projet.vercel.app${apiEndpoint}`, data);
 
         if ((isLogin && response.data?.UserLogged) || (!isLogin && response.data?.UserCreated)) {
           toast.success(response.data.message);

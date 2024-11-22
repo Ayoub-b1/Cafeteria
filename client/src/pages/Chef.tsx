@@ -6,6 +6,7 @@ import moment from 'moment';
 import { FaSpinner, FaSyncAlt } from 'react-icons/fa';
 import Modal from 'react-responsive-modal';
 import DataTable from 'react-data-table-component';
+import toast from 'react-hot-toast';
 
 interface Meal {
   _id: string; // Meal ID
@@ -49,7 +50,7 @@ function Chef() {
     if (!selectedOrder) return;
 
     if (selectedStatus === 'refused' && !refusedReason.trim()) {
-      alert('Veuillez fournir une raison pour le refus.');
+      toast.error('Veuillez fournir une raison pour le refus.');
       return;
     }
 
@@ -57,7 +58,7 @@ function Chef() {
 
     try {
       const { data } = await axios.patch(
-        `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}/orders/${selectedOrder._id}/status`,
+        `https://cafeteria-projet.vercel.app/orders/${selectedOrder._id}/status`,
         {
           status: selectedStatus,
           refusedReason: selectedStatus === 'refused' ? refusedReason : null,
@@ -73,7 +74,7 @@ function Chef() {
       setRefusedReason('');
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('Erreur lors de la mise à jour du statut.');
+      toa('Erreur lors de la mise à jour du statut.');
     } finally {
       setIsLoading(false);
     }
@@ -86,12 +87,12 @@ function Chef() {
 
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}/Orders/${usermail}`
+        `https://cafeteria-projet.vercel.app/Orders/${usermail}`
       );
       setOrders(data.orders); // Update the state with the fetched orders
     } catch (error) {
       console.error('Erreur lors de la récupération des commandes:', error);
-      alert('Erreur lors de la récupération des commandes.');
+      toast.error('Erreur lors de la récupération des commandes.');
     } finally {
       setIsLoading(false); // Hide loading spinner
     }
