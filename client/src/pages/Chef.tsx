@@ -74,7 +74,7 @@ function Chef() {
       setRefusedReason('');
     } catch (error) {
       console.error('Error updating status:', error);
-      toa('Erreur lors de la mise à jour du statut.');
+      toast.error('Erreur lors de la mise à jour du statut.');
     } finally {
       setIsLoading(false);
     }
