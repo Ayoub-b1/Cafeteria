@@ -1,11 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Define the meal type
+// Define the meal type based on MealCardProps
 interface Meal {
-  id: number; // or string, depending on your actual id type
-  status: string;
-  category: string;
+  id: number; // Identifier for the meal
+  name: string;
+  image: string;
   price: string;
+  category: string;
+  feedbacks: {
+    _id: number;
+    user: { name: string; email: string };
+    stars: number;
+    date: Date;
+    feedback: string;
+  }[];
   available: boolean;
 }
 
@@ -21,20 +29,21 @@ const mealSlice = createSlice({
   name: 'meal',
   initialState,
   reducers: {
+    // Set all meals
     setMeals(state, action: PayloadAction<Meal[]>) {
       state.meals = action.payload;
     },
-    updateMealStatus(state, action: PayloadAction<{ id: number; category: string; price?: string; available?: boolean }>) {
-      const { id, category, price, available } = action.payload;
+
+    // Update specific meal properties by id
+    updateMeal(state, action: PayloadAction<{ id: number; updates: Partial<Omit<Meal, 'id'>> }>) {
+      const { id, updates } = action.payload;
       const meal = state.meals.find((m) => m.id === id);
       if (meal) {
-        if (category) meal.category = category;
-        if (price) meal.price = price;
-        if (available !== undefined) meal.available = available;
+        Object.assign(meal, updates); // Update the meal with new properties
       }
     },
   },
 });
 
-export const { setMeals, updateMealStatus } = mealSlice.actions;
+export const { setMeals, updateMeal } = mealSlice.actions;
 export default mealSlice.reducer;

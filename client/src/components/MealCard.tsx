@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Swiper, SwiperSlide } from 'swiper/react'; // Swiper for feedback carousel
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+ // Swiper for feedback carousel
+ import 'swiper/swiper-bundle.css';  // Main Swiper CSS
+ import 'swiper/modules';
+ 
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { Autoplay } from 'swiper/modules';
 
@@ -68,9 +70,9 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
                     className='w-full h-full'
                 >
                     {meal.feedbacks.map((feedback) => (
-                        <SwiperSlide className='w-1/3 h-full' key={feedback._id}>
+                        <SwiperSlide className='w-1/3 ' key={feedback._id}>
                             <motion.div
-                                className="bg-white flex flex-col gap-2 text-black p-3 rounded-lg shadow-lg"
+                                className="bg-white flex flex-grow h-full flex-col gap-2 text-black p-3 rounded-lg shadow-lg"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}

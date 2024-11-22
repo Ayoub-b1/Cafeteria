@@ -14,7 +14,11 @@
         "express": "^4.21.1",
         "mongoose": "^7.5.1",
         "node-fetch": "^3.3.2",
-        "nodemailer": "^6.9.16"
+        "nodemailer": "^6.9.16",
+        "qrcode": "^1.5.4",
+        "react-data-table-component": "^7.6.2",
+        "react-responsive-modal": "^6.4.2",
+        "styled-components": "^6.1.13"
     },
     "devDependencies": {
         "concurrently": "^8.2.0",

@@ -1,9 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import loginAnimation from "../assets/login.json";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
 import { CgSpinner } from "react-icons/cg";
@@ -22,7 +21,6 @@ type PasswordRequirements = {
   number: boolean;
   specialCharacter: boolean;
 };
-
 
 type Errors = {
   email?: string;
@@ -50,7 +48,6 @@ const Home: React.FC = () => {
     specialCharacter: false,
   });
 
-  
   // Validation Regex
   const passwordValidation = {
     minLength: /.{8,}/,
@@ -65,16 +62,16 @@ const Home: React.FC = () => {
   const validateField = (name: string, value: string) => {
     const newErrors = { ...errors };
 
-    // Email validation
+    // Validation de l'email
     if (name === "email") {
       if (!/\S+@\S+\.\S+/.test(value)) {
-        newErrors.email = "Invalid email address";
+        newErrors.email = "Adresse email invalide";
       } else {
         delete newErrors.email;
       }
     }
 
-    // Password validation and checking requirements
+    // Validation du mot de passe et vérification des exigences
     if (name === "password") {
       if (!isLogin) {
         const newReqs = {
@@ -87,25 +84,25 @@ const Home: React.FC = () => {
       }
 
       if (formData.confirmPassword && value !== formData.confirmPassword) {
-        newErrors.confirmPassword = "Passwords do not match";
+        newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
       } else {
         delete newErrors.confirmPassword;
       }
     }
 
-    // Confirm Password validation
+    // Validation de la confirmation du mot de passe
     if (name === "confirmPassword") {
       if (value !== formData.password) {
-        newErrors.confirmPassword = "Passwords do not match";
+        newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
       } else {
         delete newErrors.confirmPassword;
       }
     }
 
-    // Name validation
+    // Validation du nom
     if (!isLogin && name === "name") {
       if (!value.trim()) {
-        newErrors.name = "Name is required";
+        newErrors.name = "Le nom est requis";
       } else {
         delete newErrors.name;
       }
@@ -123,18 +120,18 @@ const Home: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Final form validation
+    // Validation finale du formulaire
     const newErrors: Errors = {};
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
-    if (!isLogin && !formData.name) newErrors.name = "Name is required";
-    if (!isLogin && !formData.confirmPassword) newErrors.confirmPassword = "Confirm password is required";
+    if (!formData.email) newErrors.email = "L'email est requis";
+    if (!formData.password) newErrors.password = "Le mot de passe est requis";
+    if (!isLogin && !formData.name) newErrors.name = "Le nom est requis";
+    if (!isLogin && !formData.confirmPassword) newErrors.confirmPassword = "La confirmation du mot de passe est requise";
 
     if (!isLogin && Object.values(passwordRequirements).some((req) => !req)) {
-      newErrors.password = "Password must meet all requirements";
+      newErrors.password = "Le mot de passe doit répondre à toutes les exigences";
     }
     if (!isLogin && !captchaToken) {
-      toast.error("Captcha is required");
+      toast.error("Le CAPTCHA est requis");
       return;
     }
     setErrors(newErrors);
@@ -146,23 +143,25 @@ const Home: React.FC = () => {
         password: formData.password,
         name: !isLogin ? formData.name : undefined,
         confirmPassword: !isLogin ? formData.confirmPassword : undefined,
-        captchaToken, // Include the CAPTCHA token
+        captchaToken, // Inclure le token CAPTCHA
       };
 
       const apiEndpoint = isLogin ? "/login" : "/signup";
 
       try {
-        // Send POST request to the API
+        // Envoi de la requête POST à l'API
         const response = await axios.post(`${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_API_PORT}${apiEndpoint}`, data);
 
         if ((isLogin && response.data?.UserLogged) || (!isLogin && response.data?.UserCreated)) {
           toast.success(response.data.message);
           if (!isLogin) setIsLogin(true);
-          if (isLogin) dispatch(login(formData.email));
-        }
+          if (isLogin) {
+            dispatch(login({ email: formData.email, username: response.data.username, role: response.data.role }));
+          }
 
+        }
       } catch (error: any) {
-        console.error("Error:", error.response || error);
+        console.error("Erreur :", error.response || error);
         toast.error(error.response?.data.message || error.message);
       }
 
@@ -170,32 +169,28 @@ const Home: React.FC = () => {
     }
   };
 
-
   const containerVariants = {
     hidden: { opacity: 0, x: isLogin ? -50 : 50 },
     visible: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: isLogin ? -50 : 50 },
   };
 
+
   return (
     <div className="h-full w-full bg-black">
-      <Toaster />
       <div className="absolute w-full h-full">
         <img
           src="./agoraCMC.png"
           className="absolute w-full h-full top-0 left-0 object-cover"
           alt=""
         />
-        <div className="absolute w-full h-full top-0 left-0 before:absolute before:w-full before:h-full before:bg-gradient-to-r before:from-black before:to-transparent before:pointer-events-none"></div>
+        <div className="absolute w-full h-full top-0 left-0 before:absolute before:w-full before:h-full before:bg-gradient-to-r before:from-black/40 before:to-transparent before:pointer-events-none"></div>
       </div>
 
       <div className="z-50  h-full w-full flex md:flex-row flex-col items-center justify-around text-white">
-        <div className="md:w-1/3 w-2/3 ">
-          <img src="/CMC.png" className='w-2/3 mx-auto relative  z-50' alt="" />
 
-        </div>
 
-        <div className="md:w-96 overflow-y-scroll scrollbar-none  mb-5 overflow-hidden bg-white z-50 bg-opacity-95 p-6 rounded-lg shadow-lg">
+        <div className="md:w-96 max-h-[90vh] overflow-y-scroll scrollbar-none mx-auto mb-5 overflow-hidden bg-white z-50 bg-opacity-95 p-6 rounded-lg shadow-lg">
           <AnimatePresence mode="wait">
             <motion.div
               key={isLogin ? "login" : "signup"}
@@ -205,20 +200,20 @@ const Home: React.FC = () => {
               exit="exit"
             >
               <h2 className="text-2xl font-bold mb-4 text-gray-800">
-                {isLogin ? "Login" : "Sign Up"}
+                {isLogin ? "Connexion" : "Inscription"}
               </h2>
               <form onSubmit={handleSubmit}>
                 {!isLogin && (
                   <div className="mb-4">
                     <label className="block text-sm font-medium mb-1 text-gray-600" htmlFor="name">
-                      Name
+                      Nom
                     </label>
                     <input
                       type="text"
                       id="name"
                       name="name"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2B9CB8]"
-                      placeholder="Enter your name"
+                      placeholder="Entrez votre nom"
                       value={formData.name}
                       onChange={handleChange}
                     />
@@ -227,14 +222,14 @@ const Home: React.FC = () => {
                 )}
                 <div className="mb-4">
                   <label className="block text-sm font-medium mb-1 text-gray-600" htmlFor="email">
-                    Email
+                    E-mail
                   </label>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2B9CB8]"
-                    placeholder="Enter your email"
+                    placeholder="Entrez votre e-mail"
                     value={formData.email}
                     onChange={handleChange}
                   />
@@ -242,14 +237,14 @@ const Home: React.FC = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium mb-1 text-gray-600" htmlFor="password">
-                    Password
+                    Mot de passe
                   </label>
                   <input
                     type="password"
                     id="password"
                     name="password"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2B9CB8]"
-                    placeholder="Create a password"
+                    placeholder="Créez un mot de passe"
                     value={formData.password}
                     onChange={handleChange}
                   />
@@ -262,7 +257,7 @@ const Home: React.FC = () => {
                           ) : (
                             <FaTimesCircle className="text-red-500" />
                           )}
-                          <span>{`Password must contain ${key.replace("specialCharacter", "a special character")}`}</span>
+                          <span>{`Le mot de passe doit contenir ${key.replace("specialCharacter", "un caractère spécial")}`}</span>
                         </div>
                       ))}
                     </div>
@@ -274,15 +269,14 @@ const Home: React.FC = () => {
                       className="block text-sm font-medium mb-1 text-gray-600"
                       htmlFor="confirmPassword"
                     >
-                      Confirm Password
-
+                      Confirmer le mot de passe
                     </label>
                     <input
                       type="password"
                       id="confirmPassword"
                       name="confirmPassword"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#2B9CB8]"
-                      placeholder="Confirm your password"
+                      placeholder="Confirmez votre mot de passe"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                     />
@@ -296,22 +290,22 @@ const Home: React.FC = () => {
                   type="submit"
                   className="w-full px-3 py-2 bg-[#2B9CB8] text-white rounded-lg shadow-md hover:bg-[#256a8c] transition-colors"
                 >
-                  {loading ? (<CgSpinner className="rotate inline-block animate-spin" />) : isLogin ? "Login" : "Sign Up"}
-
+                  {loading ? (<CgSpinner className="rotate inline-block animate-spin" />) : isLogin ? "Connexion" : "Inscription"}
                 </button>
               </form>
               <p className="mt-4 text-sm text-gray-600">
-                {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+                {isLogin ? "Vous n'avez pas de compte ?" : "Vous avez déjà un compte ?"}{" "}
                 <span
                   onClick={() => setIsLogin((prev) => !prev)}
                   className="text-[#2B9CB8] cursor-pointer hover:underline"
                 >
-                  {isLogin ? "Sign up" : "Login"}
+                  {isLogin ? "Inscrivez-vous" : "Connectez-vous"}
                 </span>
               </p>
             </motion.div>
           </AnimatePresence>
         </div>
+
       </div>
     </div>
   );

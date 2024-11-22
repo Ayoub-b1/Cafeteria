@@ -1,14 +1,15 @@
-import  { useEffect, useState, useRef } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useEffect, useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/effect-cards';
+import 'swiper/swiper-bundle.css';  // Main Swiper CSS
+import 'swiper/modules';  // Import specific effect styles if needed
 
 import { Autoplay, EffectCards } from 'swiper/modules';
 import axios from 'axios';
 import MealCard from '../components/MealCard';
+import { useDispatch } from 'react-redux';
+import { setMeals } from '../features/mealSlice';
 
 interface Meal {
   _id: string;
@@ -25,8 +26,9 @@ interface Meal {
   }[];
 }
 function Main() {
+  const dispatch = useDispatch();
   const [currentSection, setCurrentSection] = useState<number>(0);
-  const [meals, setMeals] = useState<Meal[]>([]);
+  const [meals, setMealsList] = useState<Meal[]>([]);
   const [currentMealIndex, setCurrentMealIndex] = useState(0);
 
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -80,14 +82,15 @@ function Main() {
 
         const data = await response.data;
 
-        setMeals(data.MealsList ?? []);
+        setMealsList(data.MealsList ?? []);
+        dispatch(setMeals(data.MealsList ?? []));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
 
-  }, [])
+  }, [dispatch])
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMealIndex((prevIndex) =>
@@ -105,7 +108,6 @@ function Main() {
 
   return (
     <div className="h-full w-full bg-black overflow-hidden relative">
-      <Toaster />
 
       {/* Fixed Background */}
       <div className="fixed w-full h-full">
@@ -114,7 +116,7 @@ function Main() {
           className="absolute w-full h-full top-0 left-0 object-cover"
           alt="Background"
         />
-        <div className="absolute w-full h-full top-0 left-0 before:absolute before:w-full before:h-full before:bg-gradient-to-r before:from-black before:to-transparent before:pointer-events-none"></div>
+        <div className="absolute w-full h-full top-0 left-0 before:absolute before:w-full before:h-full before:bg-gradient-to-r before:from-black/40 before:to-transparent before:pointer-events-none"></div>
       </div>
 
       {/* Transition Container */}
@@ -122,7 +124,7 @@ function Main() {
         className="transition-transform duration-700 ease-in-out"
         style={{ transform: `translateY(-${currentSection * 100}vh)` }}
       >
-      <img src="/CMC.png" className='w-20 h-20 absolute top-4 left-1/2 -translate-x-1/2 z-50' alt="" />
+        <img src="/CMC.png" className='w-20 h-20 filter drop-shadow-2xl shadow-black absolute top-4 left-1/2 -translate-x-1/2 z-50' alt="" />
         {/* Section 1 */}
         <section
           id="section-0"
@@ -143,17 +145,18 @@ function Main() {
             <Swiper
               effect={'cards'}
               grabCursor={true}
+              loop
               autoplay={{
                 delay: 2500,
                 disableOnInteraction: false,
-              
+
 
               }}
               modules={[EffectCards, Autoplay]}
               className="mySwiper"
             >
               {images.map((image, index) => (
-                <SwiperSlide key={index}>
+                <SwiperSlide className='rounded-none' key={index}>
                   <img
                     src={image}
                     className="w-full h-full object-cover"

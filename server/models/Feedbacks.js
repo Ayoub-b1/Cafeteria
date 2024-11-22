@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const feedbackSchema = new mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
     meal: { type: mongoose.Schema.Types.ObjectId, ref: 'Meal', required: true },
     stars: {
         type: Number,
@@ -23,6 +23,6 @@ const feedbackSchema = new mongoose.Schema({
     },
 })
 
-const Feedback = mongoose.model("Feedback", feedbackSchema);
+const Feedback = mongoose.model("feedbacks", feedbackSchema);
 
 export default Feedback;

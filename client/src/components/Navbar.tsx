@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BiHomeAlt2 } from "react-icons/bi";
+import { IoHome } from "react-icons/io5";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { Link, useLocation } from 'react-router-dom';
 import { GiMeal } from "react-icons/gi";
@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
     const routes = [
         {
             name: 'Home',
-            icon: <BiHomeAlt2 />,
+            icon: <IoHome />,
             path: '/'
         },
         {
