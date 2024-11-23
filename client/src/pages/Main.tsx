@@ -86,7 +86,6 @@ function Main() {
 
         const mealsWithFeedback = data.MealsList?.filter((meal: Meal) => meal.feedbacks && meal.feedbacks.length > 0) ?? [];
         console.log(mealsWithFeedback);
-        setMealsList(data.MealsList ?? []);
         setMealsWithFeedbacks(mealsWithFeedback);
         dispatch(setMeals(data.MealsList ?? []));
       } catch (error) {
