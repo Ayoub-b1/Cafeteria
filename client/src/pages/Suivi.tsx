@@ -113,6 +113,8 @@ const Suivi: React.FC = () => {
             pagination
             striped
             customStyles={customStyles}
+      paginationRowsPerPageOptions={[3, 5, 8]}
+
             paginationPerPage={8}
             fixedHeader
             fixedHeaderScrollHeight="80vh"
@@ -144,6 +146,14 @@ const Suivi: React.FC = () => {
                 </div>
             ),
             sortable: true,
+            sortFunction: (rowA: Order, rowB: Order) => {
+                // Custom sort logic (alphabetical or priority-based)
+                const statusA = rowA.status.toLowerCase();
+                const statusB = rowB.status.toLowerCase();
+                if (statusA < statusB) return -1;
+                if (statusA > statusB) return 1;
+                return 0;
+              },
         },
         {
             name: 'Créé le',
@@ -458,7 +468,7 @@ const Suivi: React.FC = () => {
 
 
                 <div className="flex z-50 gap-5  justify-between items-center px-6 py-4 rounded-b-xl bg-white">
-                    <h2 className="text-2xl font-bold text-black">Commandes d'aujourd'hui</h2>
+                    <h2 className="text-2xl font-bold text-black">Commandes </h2>
                     <button
                         onClick={fetchOrders}
                         className="flex items-center bg-[#2B9CB8] text-white px-4 py-2 rounded hover:brightness-95 transition duration-200"

@@ -45,7 +45,7 @@ const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
 
 // Memoized LoadingFallback component
 const LoadingFallback = memo(() => (
-  <div className="h-screen flex items-center justify-center bg-black text-white">
+  <div className="h-screen flex items-center justify-center bg-white text-white">
 
   </div>
 ));
@@ -71,7 +71,7 @@ interface PageWrapperProps {
 const PageWrapper = memo(({ children }: PageWrapperProps) => (
   <motion.div
     {...pageTransition}
-    className="h-screen relative overflow-hidden bg-black"
+    className="md:h-screen min-h-[100vh] relative overflow-hidden bg-black"
     style={{ backgroundColor: "black", willChange: "clip-path, opacity, transform" }}
   >
     <motion.div

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
  // Swiper for feedback carousel
@@ -25,6 +25,7 @@ interface MealCardProps {
 }
 
 const MealCard: React.FC<MealCardProps> = ({ meal }) => {
+    const [isSmallScreen , setIsSmallScreen] =useState(false)
     const renderStars = (rating: number) => {
         const totalStars = 5;
         const stars = [];
@@ -39,18 +40,31 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
 
         return stars;
     };
+    useEffect(() => {
+        // Check screen size on initial render
+        const handleResize = () => {
+          setIsSmallScreen(window.innerWidth < 768); // Example: Small screen if width < 768px
+        };
+    
+        handleResize(); // Set the initial screen size
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleResize); // Cleanup event listener
+        };
+      }, []);
     return (
         <motion.div
-            className="flex flex-col items-center w-full gap-10 text-white p-4"
+            className="flex flex-col items-center w-full md:gap-10 text-white md:p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="flex bg-white p-5 rounded-lg text-black  gap-4 w-[40%]">
+            <div className="flex bg-white p-5 rounded-lg md:flex-row flex-col text-center text-black max-h-[300px]  gap-4 md:w-[40%]">
                 <img src={meal.image} alt={meal.name} className=" mx-auto w-2/4 object-cover rounded-lg shadow-lg " />
                 <div className="flex flex-col">
-                    <h2 className="text-2xl font-bold mb-2">{meal.name}</h2>
+                    <h2 className="md:text-2xl text-xl font-bold mb-2">{meal.name}</h2>
                     <p className="mb-2">type: {meal.category}</p>
                     <p className="mb-4">Prix: {meal.price} DH</p>
                 </div>
@@ -66,11 +80,11 @@ const MealCard: React.FC<MealCardProps> = ({ meal }) => {
                     }}
                     modules={[Autoplay ]}
                     grabCursor={true}
-                    slidesPerView={3}
+                    slidesPerView={isSmallScreen ? 1 : 3}
                     className='w-full h-full'
                 >
                     {meal.feedbacks.map((feedback) => (
-                        <SwiperSlide className='w-1/3 ' key={feedback._id}>
+                        <SwiperSlide className='md:w-1/3 w-full' key={feedback._id}>
                             <motion.div
                                 className="bg-white flex flex-grow h-full flex-col gap-2 text-black p-3 rounded-lg shadow-lg"
                                 initial={{ opacity: 0 }}

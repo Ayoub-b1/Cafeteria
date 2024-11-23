@@ -153,9 +153,9 @@ const Menu: React.FC = () => {
                             className="w-48 h-48 object-cover mb-4 mx-auto"
                         />
                     }
-                    {isLoading && <hr className='my-6'/>}
+                    {isLoading && <hr className='my-6' />}
                     <h3 className="font-bold">{selectedMeal?.name}</h3>
-                    {isLoading && <hr className='my-6'/>}
+                    {isLoading && <hr className='my-6' />}
                     <p><strong>Catégorie:</strong> {selectedMeal?.category}</p>
                     <p><strong>Prix:</strong> {selectedMeal?.price} DH</p>
                     <p><strong>Quantité:</strong> {quantity}</p>
@@ -198,19 +198,27 @@ const Menu: React.FC = () => {
                 <div className="absolute w-full h-full top-0 left-0 before:absolute before:w-full before:h-full before:bg-gradient-to-r before:from-black/40 before:to-transparent before:pointer-events-none"></div>
             </div>
 
-            <div className="z-50 flex-wrap h-full w-full flex md:flex-row flex-col items-start py-10 justify-evenly text-white">
+            <div className="z-50 flex-wrap h-full w-full flex md:flex-row items-start py-10 md:justify-evenly justify-center text-white">
                 {/* Filter Divs */}
-                <div onClick={() => { setFilter('Petit-déjeuner') }} className="mb-5 w-1/2 z-50 p-6 rounded-lg flex cursor-pointer hover:scale-105 flex-col items-center justify-center gap-4 text-center">
-                    <img src="/svg/breakfast.svg" className="w-28 drop-shadow-xl h-28 object-cover" alt="" />
+                <div onClick={() => { setFilter('Petit-déjeuner') }} className="mb-5 z-50 md:p-6 p-2  rounded-lg flex cursor-pointer hover:scale-105 flex-col items-center justify-center gap-4 text-center">
+                    <img src="/svg/breakfast.svg" className="md:w-28 drop-shadow-xl md:h-28 object-cover w-12 h-12" alt="" />
                     <h2 className="text-xl pacifico-regular">Petit-déjeuner</h2>
                 </div>
-                <div onClick={() => { setFilter("Déjeuner") }} className="mb-5 w-1/2 z-50 p-6 rounded-lg flex cursor-pointer hover:scale-105 flex-col items-center justify-center gap-4 text-center">
-                    <img src="/svg/lunch.svg" className="w-28 h-28 object-cover" alt="" />
+                <div onClick={() => { setFilter('Jus') }} className="mb-5 z-50 md:p-6 p-2  rounded-lg flex cursor-pointer hover:scale-105 flex-col items-center justify-center gap-4 text-center">
+                    <img src="/svg/jus.svg" className="md:w-24 drop-shadow-xl md:h-28 object-cover w-12 h-12" alt="" />
+                    <h2 className="text-xl pacifico-regular">Jus</h2>
+                </div>
+                <div onClick={() => { setFilter('Plat-Spécial') }} className="mb-5 z-50 md:p-6 p-2  rounded-lg flex cursor-pointer hover:scale-105 flex-col items-center justify-center gap-4 text-center">
+                    <img src="/svg/spec.svg" className="md:w-24 drop-shadow-xl md:h-28 object-cover w-12 h-12" alt="" />
+                    <h2 className="text-xl pacifico-regular">Plat-Spécial </h2>
+                </div>
+                <div onClick={() => { setFilter("Déjeuner") }} className="mb-5 z-50 md:p-6 p-2  rounded-lg flex cursor-pointer hover:scale-105 flex-col items-center justify-center gap-4 text-center">
+                    <img src="/svg/lunch.svg" className="md:w-28 md:h-28 object- w-12 h-12 " alt="" />
                     <h2 className="text-xl pacifico-regular">Déjeuner</h2>
                 </div>
 
                 {/* Meal Cards */}
-                <div className="w-full flex-grow flex flex-wrap justify-center gap-5 overflow-y-auto p-5">
+                <div className="w-full flex-grow flex flex-wrap justify-center gap-5 overflow-y-scroll p-5 max-h-screen ">
                     {filteredMeals?.map((meal) => (
                         <div
                             key={meal.id}
@@ -240,6 +248,7 @@ const Menu: React.FC = () => {
                         </div>
                     ))}
                 </div>
+
             </div>
         </div>
     );

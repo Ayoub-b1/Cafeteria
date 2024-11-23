@@ -22,6 +22,9 @@
       padding-left: 10px;
       padding-right: 10px;
     }
+    .swiper {
+      width: 200px !important;
+    }
   }
   
   /* Medium screens (min-width: 577px and max-width: 768px) */
@@ -29,12 +32,18 @@
     .bs-container {
       max-width: 540px; /* Custom max-width for medium screens */
     }
+    .swiper {
+      width: 350px !important;
+    }
   }
   
   /* Large screens (min-width: 769px and max-width: 992px) */
   @media (min-width: 769px) and (max-width: 992px) {
     .bs-container {
       max-width: 720px; /* Custom max-width for large screens */
+    }
+    .swiper {
+      width: 500px !important;
     }
   }
   
@@ -59,6 +68,7 @@
   width: 340px;
   height: 420px;
 }
+
 
 .swiper-slide {
   display: flex;

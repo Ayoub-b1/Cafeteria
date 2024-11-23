@@ -29,7 +29,10 @@ function Main() {
   const dispatch = useDispatch();
   const [currentSection, setCurrentSection] = useState<number>(0);
   const [meals, setMealsList] = useState<Meal[]>([]);
+  const [mealsWithFeedbacks, setMealsWithFeedbacks] = useState<Meal[]>([]);
   const [currentMealIndex, setCurrentMealIndex] = useState(0);
+
+
 
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const images = [
@@ -82,7 +85,10 @@ function Main() {
 
         const data = await response.data;
 
+        const mealsWithFeedback = data.MealsList?.filter((meal: Meal) => meal.feedbacks && meal.feedbacks.length > 0) ?? [];
+        console.log(mealsWithFeedback);
         setMealsList(data.MealsList ?? []);
+        setMealsWithFeedbacks(mealsWithFeedback);
         dispatch(setMeals(data.MealsList ?? []));
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -94,12 +100,13 @@ function Main() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMealIndex((prevIndex) =>
-        meals.length > 0 ? (prevIndex + 1) % meals.length : 0
+        mealsWithFeedbacks.length > 0 ? (prevIndex + 1) % mealsWithFeedbacks.length : 0
       );
     }, 5000);
-
+  
     return () => clearInterval(interval); // Cleanup interval
-  }, [meals]);
+  }, [mealsWithFeedbacks]);
+  
   // Add event listener for wheel scroll
   useEffect(() => {
     window.addEventListener('wheel', handleScroll, { passive: false });
@@ -124,15 +131,15 @@ function Main() {
         className="transition-transform duration-700 ease-in-out"
         style={{ transform: `translateY(-${currentSection * 100}vh)` }}
       >
-        <img src="/CMC.png" className='w-20 h-20 filter drop-shadow-2xl shadow-black absolute top-4 left-1/2 -translate-x-1/2 z-50' alt="" />
+        <img src="/CMC.png" className='w-20 h-20 filter drop-shadow-2xl shadow-black relative md:absolute top-4 left-1/2 -translate-x-1/2 z-50' alt="" />
         {/* Section 1 */}
         <section
           id="section-0"
           ref={(el) => (sectionRefs.current[0] = el)}
           className="z-50 relative bs-container h-screen w-full flex md:flex-row flex-col items-center justify-around text-white transition-transform duration-1000 scale-initial"
         >
-          <div className="flex flex-col w-1/2 pl-0 gap-3 p-4">
-            <h1 className="text-3xl font-bold pacifico-regular">
+          <div className="flex flex-col md:w-1/2 w-4/5 mx-auto p-0 pl-0 gap-3 md:p-4">
+            <h1 className="md:text-3xl text-xl font-bold pacifico-regular">
               Discover the cool place to enjoy your meals
             </h1>
             <p>
@@ -141,7 +148,7 @@ function Main() {
               memorable.
             </p>
           </div>
-          <div className="flex flex-col w-1/2">
+          <div className="flex flex-col md:w-1/2">
             <Swiper
               effect={'cards'}
               grabCursor={true}
@@ -172,16 +179,16 @@ function Main() {
         <section
           id="section-1"
           ref={(el) => (sectionRefs.current[1] = el)}
-          className="z-50 relative p-5 bs-container h-screen w-full flex flex-col items-center justify-around text-white transition-transform duration-1000 scale-initial"
+          className="z-50 left-1/2 -translate-x-1/2 absolute top-[100vh] bs-container h-screen w-full flex flex-col items-center justify-around text-white transition-transform duration-1000 scale-initial"
         >
-          <div className="flex flex-col w-1/2 h-1/4 items-center justify-center *: pl-0 gap-3 p-4">
-            <h1 className="text-3xl font-bold pacifico-regular text-center">Découvrer les avis des autres sur nous</h1>
+          <div className="flex flex-col md:w-1/2 h-1/4 items-start justify-end    pl-0 md:gap-3 p-4">
+            <h1 className="md:text-3xl text-xl font-bold pacifico-regular text-center">Découvrer les avis des autres sur nous</h1>
 
           </div>
           <div className="flex flex-col  flex-grow  w-full">
             <div className="flex h-full justify-center">
-              {meals.length > 0 ? (
-                <MealCard meal={meals[currentMealIndex]} />
+              {mealsWithFeedbacks.length > 0 ? (
+                <MealCard meal={mealsWithFeedbacks[currentMealIndex]} />
               ) : (
                 <p className="text-white">Loading meals...</p>
               )}
