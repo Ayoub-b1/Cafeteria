@@ -19,7 +19,7 @@ const app = express();
 app.use(compression());
 // Enable CORS for all origins (allow any front-end to access this server)
 app.use(cors(
-    
+
 ));
 
 // Enable CORS with specific origin (if needed, uncomment the next line)
@@ -36,8 +36,8 @@ await mongoose.connect(process.env.PRODMONGORI, {
     socketTimeoutMS: 45000,        // Timeout for socket inactivity
     bufferCommands: false,         // Disable buffering
 })
-.then(() => console.log('MongoDB connected successfully!'))
-.catch(err => console.error('MongoDB connection failed:', err));
+    .then(() => console.log('MongoDB connected successfully!'))
+    .catch(err => console.error('MongoDB connection failed:', err));
 
 // Example route
 app.post('/signup', validateCaptcha, async (req, res) => {
@@ -205,7 +205,7 @@ app.patch('/orders/:id/status', async (req, res) => {
 });
 
 app.post('/leavefeedback', async (req, res) => {
-    const { orderId, client, feedback, rating ,mealId } = req.body;
+    const { orderId, client, feedback, rating, mealId } = req.body;
 
     try {
         // Validate user existence
@@ -219,10 +219,10 @@ app.post('/leavefeedback', async (req, res) => {
         if (!order) {
             return res.status(404).json({ message: 'Order not found' });
         }
-        
-        const meal = await Meal.findOne({ _id :mealId});
+
+        const meal = await Meal.findOne({ _id: mealId });
         if (!meal) {
-            return res.status(404).json({ message: 'Meal not found'  , meal : meal , order : order});
+            return res.status(404).json({ message: 'Meal not found', meal: meal, order: order });
         }
 
         // Check for existing feedback
@@ -254,7 +254,6 @@ app.post('/leavefeedback', async (req, res) => {
         res.status(500).json({ message: 'Error processing feedback', error: error.message });
     }
 });
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
