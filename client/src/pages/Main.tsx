@@ -28,7 +28,6 @@ interface Meal {
 function Main() {
   const dispatch = useDispatch();
   const [currentSection, setCurrentSection] = useState<number>(0);
-  const [meals, setMealsList] = useState<Meal[]>([]);
   const [mealsWithFeedbacks, setMealsWithFeedbacks] = useState<Meal[]>([]);
   const [currentMealIndex, setCurrentMealIndex] = useState(0);
 
